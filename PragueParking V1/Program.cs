@@ -1,4 +1,4 @@
-﻿string[] parkeringsPlatser = new string[100];
+﻿string[] parkeringsPlatser = new string[101];
 
 int menyVal = 1;
 
@@ -76,8 +76,7 @@ void RegistreraFordon()
         {
         Console.WriteLine("\nOgiltigt val.");
         Console.ReadKey();
-        }
-        
+        }  
     }
 
 
@@ -97,9 +96,18 @@ string HämtaFordonsTyp()
     {
         Console.Write("Typ av fordon (bil/mc): ");
         string fordonsTyp = Console.ReadLine();
-        if (fordonsTyp == "bil" || fordonsTyp == "mc")
+        string bil = "CAR";
+        string mc = "MC";
+
+        if (fordonsTyp == "bil")
         {
-            return fordonsTyp;
+            fordonsTyp = bil;
+            return bil;
+        }
+        else if (fordonsTyp == "mc")
+        {
+            fordonsTyp = mc;
+            return mc;
         }
         Console.WriteLine("Ogiltig fordonstyp.");
         
@@ -108,12 +116,18 @@ string HämtaFordonsTyp()
 
 void ParkeraFordon(string fordonsTyp, string regNr)
 {
-    for (int i = 0; i < parkeringsPlatser.Length; i++)
+    for (int i = 1; i < parkeringsPlatser.Length; i++)
     {
         if (parkeringsPlatser[i] == null)
         {
-            parkeringsPlatser[i] = fordonsTyp + regNr;
-            Console.WriteLine($"Fordonet {fordonsTyp.ToUpper()}#{regNr.ToUpper()} har parkerats på plats {i + 1}");
+            parkeringsPlatser[i] = fordonsTyp.ToUpper() + "#" + regNr.ToUpper();
+            Console.WriteLine($"Fordonet {fordonsTyp.ToUpper()}#{regNr.ToUpper()} har parkerats på plats {i}");
+            return;
+        }
+        else if (parkeringsPlatser[i].StartsWith("MC#") && fordonsTyp == "MC" && !parkeringsPlatser[i].Contains('-'))
+        {
+            parkeringsPlatser[i] += " - " + fordonsTyp.ToUpper() + "#" + regNr.ToUpper();
+            Console.WriteLine($"Fordonet {fordonsTyp.ToUpper()}#{regNr.ToUpper()} har parkerats på plats {i}");
             return;
         }
     }
@@ -125,8 +139,7 @@ void VisaParkeringsPlatser()
     for (int i = 1; i < parkeringsPlatser.Length; i++)
     {
         Console.WriteLine("Parkeringsplats {0}: {1} ", i, parkeringsPlatser[i]);
-        return;
-        
+
     }
 
     Console.ReadKey();
@@ -135,23 +148,29 @@ void VisaParkeringsPlatser()
 void SökFordon()
 {
     Console.Clear();
-    Console.Write("Registreringsnummer: ");
-    string sökning = Console.ReadLine();
+    Console.Write("Ange registreringsnummer: ");
+    var sökning = Console.ReadLine();
 
     bool hittad = false;
 
-    for (int i = 0; i < parkeringsPlatser.Length; i++)
+    while (true)
     {
-        if (parkeringsPlatser[i].Equals(sökning, StringComparison.OrdinalIgnoreCase))
+        for (int i = 0; i < parkeringsPlatser.Length; i++)
         {
-            Console.WriteLine("Bilen står parkerad på {0}", i);
-            hittad = true;
+            if (parkeringsPlatser[i] != null && parkeringsPlatser[i].Contains(sökning, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Fordonet {0} står parkerad på parkeringsplats {1}", parkeringsPlatser[i], i);
+                hittad = true;
+                Console.WriteLine("\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
+                Console.ReadKey();
+                break;
+            }
+        } 
+        if (hittad == false)
+        {
+            Console.WriteLine("Hittar inget fordon med det registreringsnumret.");
+            Console.ReadKey();
             break;
         }
-    }
-
-    if (hittad == false)
-    {
-        Console.WriteLine("Hittar ingen bil med det registreringsnumret.");
     }
 }
