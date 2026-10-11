@@ -23,9 +23,9 @@ void RegistreraFordon()
             {
                 Console.Clear();
                 ParkeraFordon(fordonsTyp, regNr);
-                Console.WriteLine("\n\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
+                Console.Write("\n\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
                 Console.ReadKey();
-                break;
+                return;
 
             }
             else if (knapp.Key == ConsoleKey.N)
@@ -41,7 +41,7 @@ void RegistreraFordon()
                 Console.WriteLine("\nOgiltigt val!");
                 Console.ResetColor();
                 Console.WriteLine("Tryck 'J' eller 'N'");
-            } 
+            }
         }
     }
 
@@ -73,7 +73,7 @@ string HämtaRegNr()
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Ogiltigt registreringsnummer!");
             Console.ResetColor();
-            Console.WriteLine("\nTryck på valfri tangent för att försöka igen.");
+            Console.Write("\nTryck på valfri tangent för att försöka igen.");
             Console.ReadKey();
         }
         else
@@ -106,8 +106,9 @@ string HämtaFordonsTyp()
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Ogiltig fordonstyp!");
         Console.ResetColor();
-        Console.WriteLine("\nTryck på valfri tangent för att försöka igen.");
+        Console.Write("\nTryck på valfri tangent för att försöka igen.");
         Console.ReadKey();
+        
 
     }
 }
@@ -138,6 +139,8 @@ void VisaParkeringsPlatser()
     {
         Console.WriteLine("Parkeringsplats {0}: {1} ", i, parkeringsPlatser[i]);
     }
+
+    Console.Write("\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
     Console.ReadKey();
 }
 
@@ -154,13 +157,13 @@ void SökFordon()
             if (parkeringsPlatser[i] != null && parkeringsPlatser[i].Contains("#" + sökFordon))
             {
                 Console.WriteLine("Fordonet {0} står parkerad på parkeringsplats {1}.", parkeringsPlatser[i], i);
-                Console.WriteLine("\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
+                Console.Write("\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
                 Console.ReadKey();
                 return;
             }
         }
         Console.WriteLine("Hittar inget fordon med det registreringsnumret.");
-        Console.WriteLine("\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
+        Console.Write("\nTryck på valfri tangent för att komma tillbaka till huvudmenyn.");
         Console.ReadKey();
         return;
     }
